@@ -24,7 +24,13 @@ app.get('/', function(request, response) {
 });
 
 app.get('/reset', function(request, response) {
-	entities = [];
+	var newEntities = {};
+	for (const id in entities) {
+		if (entities[id].name == 'player') {
+			newEntities[id] = entities[id];
+		}
+	}
+	entities = newEntities;
 	generateWorld();
 	console.log('World reset.');
 });

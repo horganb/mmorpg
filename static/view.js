@@ -17,6 +17,8 @@ function setup() {
 	canvas.height = canvas_height;
 	canvas.color = 'blue';
 	ctx.font = font_size + "px Consolas";
+	var chatBox = document.getElementById('chat-box');
+	chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function viewTick() {

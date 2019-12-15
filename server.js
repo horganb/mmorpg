@@ -31,7 +31,10 @@ app.get('/reset', function(request, response) {
 		}
 	}
 	entities = newEntities;
+	var temp = nextId;
+	nextId = 0;
 	generateWorld();
+	nextId = temp;
 	console.log('World reset.');
 });
 
@@ -71,11 +74,13 @@ function playerConnect(socket, id) {
 	}
 	socket.emit('init', id);
 	nextId++;
+	io.sockets.emit('player-connect', id);
 }
 
 function playerDisconnect(id) {
 	console.log('player ' + id + ' disconnected.');
 	delete entities[id];
+	io.sockets.emit('player-disconnect', id);
 }
 
 function playerMove(data, id) {

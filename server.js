@@ -74,7 +74,7 @@ function playerConnect(socket, id) {
 function playerDisconnect(id) {
 	console.log('player ' + id + ' disconnected.');
 	var index = 0;
-	while (players[index].id != id) {
+	while (index < players.length && players[index].id != id) {
 		index++;
 	}
 	for (var i = index; i < players.length - 1; i++) {
@@ -85,7 +85,7 @@ function playerDisconnect(id) {
 
 function playerMove(data, id) {
 	var index = 0;
-	while (players[index].id != id) {
+	while (index < players.length && players[index].id != id) {
 		index++;
 	}
 	if (players[index]) {

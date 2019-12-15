@@ -29,9 +29,9 @@ function redraw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = '#b3ffb3';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	for (var i = 0; i < entities.length; i++) {
-		if (entities[i] !== undefined) {
-			drawEntity(art[entities[i].name], entities[i].x, entities[i].y);
+	for (const id in entities) {
+		if (entities[id] !== undefined) {
+			drawEntity(art[entities[id].name], entities[id].x, entities[id].y);
 		}
 	}
 }
@@ -51,11 +51,9 @@ function shiftBorder() {
 }
 
 function updateViewport() {
-	// OPTIMIZE THIS!!
-	for (var i = 0; i < entities.length; i++) {
-		if (entities[i].id == id) {
-			viewX = entities[i].x - (canvas_width / 2);
-			viewY = entities[i].y - (canvas_height / 2);
-		}
-	}
+	viewX = entities[playerId].x - (canvas_width / 2);
+	viewY = entities[playerId].y - (canvas_height / 2);
 }
+
+
+

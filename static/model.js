@@ -1,10 +1,20 @@
 var socket = io();
-var entities = [];
-var id = -1;
+var entities = {};
+var playerId = -1;
 
-socket.on('init', function(data) {
-	console.log('I am player ' + data);
-	id = data;
+socket.on('init', (data) => {
+	playerId = data;
+	document.getElementById('chat-box').innerHTML = '<span color="red">Welcome, Player ' + playerId + '!</span>';
+});
+
+socket.on('chat', (data) => {
+	console.log(data.message);
+	document.getElementById('chat-box').innerHTML += '\n' + 'Player ' + data.id + ': ' + data.message;
+});
+
+socket.on('update', (data) => {
+	entities = data;
+	viewTick();
 });
 
 function moveUp() {
@@ -42,8 +52,7 @@ function clearMove() {
 	});
 }
 
-socket.on('update', function(data) {
-	entities = data.entities;
-	viewTick();
-});
+function sendChat(message) {
+	socket.emit('chat', message);
+}
 

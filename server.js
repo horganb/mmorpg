@@ -10,7 +10,7 @@ var io = socketIO(server);
 
 var nextPlayer = 1000;
 
-const port = 80;
+const port = 5000;
 
 app.set('port', port);
 

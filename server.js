@@ -56,8 +56,8 @@ setInterval(function() {
 
 function playerConnect(socket, id) {
 	console.log('player ' + id + ' connected!');
-	var playerX = 500;
-	var playerY = 500;
+	var playerX = 0;
+	var playerY = 0;
 	players.push(
 	{
 		name: 'player',
@@ -116,22 +116,32 @@ function moveBob() {
 }
 
 function generateWorld() {
-	var bobs = randomNum(3, 6);
+	var bobs = randomNum(6, 12);
 	for (var i = 0; i < bobs; i++) {
-		var x = randomNum(50, 550);
-		var y = randomNum(50, 550);
+		var x = randomNum(-1000, 1000);
+		var y = randomNum(-1000, 1000);
 		entities.push({
 			name: 'bob',
 			x: x,
 			y: y
 		});
 	}
-	var puds = randomNum(0, 2);
+	var puds = randomNum(0, 5);
 	for (var i = 0; i < puds; i++) {
-		var x = randomNum(50, 550);
-		var y = randomNum(50, 550);
+		var x = randomNum(-1000, 1000);
+		var y = randomNum(-1000, 1000);
 		entities.push({
 			name: 'puddle',
+			x: x,
+			y: y
+		});
+	}
+	var grass = randomNum(0, 1000);
+	for (var i = 0; i < grass; i++) {
+		var x = randomNum(-1000, 1000);
+		var y = randomNum(-1000, 1000);
+		entities.push({
+			name: 'grass',
 			x: x,
 			y: y
 		});

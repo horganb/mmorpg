@@ -1,12 +1,10 @@
-//var charLoc = [10, 20];
-//var player = -1;
 var socket = io();
 var entities = [];
+var id = -1;
 
 socket.on('init', function(data) {
-	//charLoc = [data.x, data.y];
-	//player = data;
 	console.log('I am player ' + data);
+	id = data;
 });
 
 function moveUp() {
@@ -46,7 +44,6 @@ function clearMove() {
 
 socket.on('update', function(data) {
 	entities = data.entities;
-	//charLoc = [entities[player].x, entities[player].y];
 	viewTick();
 });
 

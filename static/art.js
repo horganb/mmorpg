@@ -45,6 +45,13 @@ const art = {
 		'bbbbbbb',
 		'  bbbbb'
 		]
+	],
+	grass: [
+		[
+		'\''
+		], [
+		'g'
+		]
 	]
 }
 

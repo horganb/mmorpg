@@ -6,12 +6,21 @@
 	<script src="/socket.io/socket.io.js"></script>
 
 </head>
-<body id="main">
+<body id="main" style="background-color: black">
 
-	<div align="center">
-		<canvas id="main-canvas" style="border:1px solid blue;">
+	
+	
+	<div style="position: relative; right: 250px;" align="center">
+	
+		<span id="chat" style="visibility: hidden;">
+			<input size="30" style="position: relative; left: 338px; bottom: 6px;"></input>
+			<textarea rows="34" cols="30" style="position: relative; left: 105px; bottom: 28px;">Welcome, player!</textarea>
+		</span>
+		<button onclick="toggleChat()" style="position: relative; bottom: 575px; left: 3px; background-color: black; color: white; width: 100px; font: 20px Consolas;">CHAT</button>
+		<canvas id="main-canvas" style="border:1px solid blue;">	
 			Unsupported browser. Sorry!
 		</canvas>
+		
 	</div>
 	
 	<script src="static/art.js"></script>

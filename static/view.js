@@ -1,6 +1,10 @@
 const font_size = 20;
+const canvas_width = 700;
+const canvas_height = 600;
 var border_color = 0;
 var border_colors = ['black', 'gray'];
+var viewX = 0;
+var viewY = 0;
 
 const canvas = document.getElementById("main-canvas");
 
@@ -9,13 +13,14 @@ const ctx = canvas.getContext("2d");
 setup();
 
 function setup() {
-	canvas.width = 700;
-	canvas.height = 600;
+	canvas.width = canvas_width;
+	canvas.height = canvas_height;
 	canvas.color = 'blue';
 	ctx.font = font_size + "px Consolas";
 }
 
 function viewTick() {
+	updateViewport();
 	shiftBorder();
 	redraw();
 }
@@ -35,7 +40,7 @@ function drawEntity(entity, x, y) {
 	for (var i = 0; i < entity[0].length; i++) {
 		for (var j = 0; j < entity[0][i].length; j++) {
 			ctx.fillStyle = color_key[entity[1][i][j]];
-			ctx.fillText(entity[0][i][j], x + (font_size / 1.8)*j, y + font_size*i);
+			ctx.fillText(entity[0][i][j], x + (font_size / 1.8)*j - viewX, y + font_size*i - viewY);
 		}
 	}
 }
@@ -43,4 +48,14 @@ function drawEntity(entity, x, y) {
 function shiftBorder() {
 	border_color = (border_color + 1) % border_colors.length;
 	canvas.style.border = '1px solid ' + border_colors[border_color];
+}
+
+function updateViewport() {
+	// OPTIMIZE THIS!!
+	for (var i = 0; i < entities.length; i++) {
+		if (entities[i].id == id) {
+			viewX = entities[i].x - (canvas_width / 2);
+			viewY = entities[i].y - (canvas_height / 2);
+		}
+	}
 }

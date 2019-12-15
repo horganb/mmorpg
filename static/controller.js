@@ -34,6 +34,15 @@ function checkMoves() {
 	}
 }
 
+function toggleChat() {
+	var chat = document.getElementById('chat');
+	if (chat.style.visibility == 'visible') {
+		chat.style.visibility = 'hidden';
+	} else {
+		chat.style.visibility = 'visible';
+	}
+}
+
 
 
 

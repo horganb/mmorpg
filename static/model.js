@@ -4,7 +4,7 @@ var playerId = -1;
 
 socket.on('init', (data) => {
 	playerId = data;
-	document.getElementById('chat-box').innerHTML = '<span color="red">Welcome, Player ' + playerId + '!</span>';
+	document.getElementById('chat-box').innerHTML = 'Welcome, Player ' + playerId + '!';
 });
 
 socket.on('chat', (data) => {
@@ -18,7 +18,7 @@ socket.on('update', (data) => {
 });
 
 function moveUp() {
-	socket.emit('player-move', { 
+	socket.emit('player-move', {
 		x: 0,
 		y: -20
 	});

@@ -5,7 +5,8 @@ const color_key = {
 	y : 'yellow',
 	r : 'red',
 	p : 'purple',
-	g: 'green'
+	g: 'green',
+	R : 'brown'
 }
 
 const art = {
@@ -96,6 +97,29 @@ const art = {
 		' bbbbbbbb           ',
 		'   bbb              '
 		]
-	]
+	],
+	tree: [
+		[
+		'    ouo=uuuo     ',
+		'  ~u=o~ouu~~=o   ',
+		'  u~~~u=uu~uoo   ',
+		'  uuo~~ou=o~uo   ',
+		'    ou ||ouu     ',
+		'       ||        ',
+		'       ||        ',
+		'      .||.       ',
+		'     ``````      '
+		], [
+		'    gggggggg     ',
+		'  ggRgggggggRg   ',
+		'  gggggRgggggg   ',
+		'  gggggggRgggg   ',
+		'    gg RRggg     ',
+		'       RR        ',
+		'       RR        ',
+		'      gRRg       ',
+		'     RRRRRR      '
+		]
+	]	
 }
 

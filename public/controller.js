@@ -1,4 +1,4 @@
-const move_keys = ['KeyW', 'KeyS', 'KeyA', 'KeyD'];
+const move_keys = [87, 83, 65, 68];
 
 var keys_pressed = [];
 var chatSelected = false;
@@ -7,16 +7,18 @@ window.onkeydown = keyPressed;
 window.onkeyup = keyReleased;
 window.onmousedown = mouseDown;
 window.onblur = windowBlur;
+window.onfocus = () => console.log('focused!');
 
 window.focus();
 
 function keyPressed(e) {
-	if ((keys_pressed.length == 0 || keys_pressed[0] != e.code) && move_keys.includes(e.code)) {
-		keys_pressed.unshift(e.code);
+	console.log('key pressed! ' + e.key);
+	if ((keys_pressed.length == 0 || keys_pressed[0] != e.keyCode) && move_keys.includes(e.keyCode)) {
+		keys_pressed.unshift(e.keyCode);
 		checkMoves();
 	}
 	
-	if (e.code == 'Enter') {
+	if (e.keyCode == 13) {
 		var chat = document.getElementById('chat-input');
 		if (chatSelected) {
 			chat.blur();
@@ -25,14 +27,14 @@ function keyPressed(e) {
 		} else {
 			chat.focus();
 		}
-	} else if (e.shiftKey && e.key != 'Shift') {
+	} else if (e.shiftKey && e.keyCode != 16) {
 		art.player[0][0] = art.player[0][0][0] + e.key[0] + art.player[0][0][2];
 		updateSkin(art.player);
 	}
 }
 
 function keyReleased(e) {
-	keys_pressed = keys_pressed.filter((k) => k != e.code);
+	keys_pressed = keys_pressed.filter((k) => k != e.keyCode);
 	if (keys_pressed.length > 0) {
 		checkMoves();
 	} else {
@@ -43,16 +45,16 @@ function keyReleased(e) {
 function checkMoves() {
 	if (!chatSelected) {
 		switch (keys_pressed[0]) {
-			case 'KeyW':
+			case 87:
 				moveUp();
 				break;
-			case 'KeyS':
+			case 83:
 				moveDown();
 				break;
-			case 'KeyA':
+			case 65:
 				moveLeft();
 				break;
-			case 'KeyD':
+			case 68:
 				moveRight();
 				break;
 		}
@@ -102,6 +104,7 @@ function clickInPlayerRange(range, mouseX, mouseY) {
 }
 
 function windowBlur() {
+	console.log('blurred!');
 	keys_pressed = [];
 	clearMove();
 }

@@ -10,7 +10,8 @@ const worldGenList = {
 	'puddle': {locs: ['grasslands'], density: 2},
 	'big_puddle': {locs: ['grasslands'], density: 1},
 	'grass': {locs: ['grasslands'], density: 500},
-	'sand': {locs: ['desert'], density: 500}
+	'sand': {locs: ['desert'], density: 500},
+	'tree': {locs: ['grasslands'], density: 2}
 }
 
 function generateWorld(nextId, entities, land) {

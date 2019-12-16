@@ -13,6 +13,7 @@ socket.on('init', (data) => {
 	bounds = data[1];
 	chatBoxOutput('Welcome, Player ' + playerId + '!');
 	updateSkin(art.player);
+	window.focus();
 });
 
 socket.on('map', (data) => {

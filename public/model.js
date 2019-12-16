@@ -1,12 +1,16 @@
+const move_speed = 20;
+
 var socket = io();
 var entities = {};
 var playerId = -1;
 var land = [];
 var date = new Date();
 var ping = date.getTime();
+var bounds;
 
 socket.on('init', (data) => {
-	playerId = data;
+	playerId = data[0];
+	bounds = data[1];
 	chatBoxOutput('Welcome, Player ' + playerId + '!');
 	updateSkin(art.player);
 });
@@ -47,27 +51,27 @@ socket.on('reset', (data) => {
 function moveUp() {
 	socket.emit('player-move', {
 		x: 0,
-		y: -20
+		y: -move_speed
 	});
 }
 
 function moveDown() {
 	socket.emit('player-move', {
 		x: 0,
-		y: 20
+		y: move_speed
 	});
 }
 
 function moveLeft() {
 	socket.emit('player-move', { 
-		x: -20, 
+		x: -move_speed, 
 		y: 0
 	});
 }
 
 function moveRight() {
-	socket.emit('player-move', { 
-		x: 20, 
+	socket.emit('player-move', {
+		x: move_speed, 
 		y: 0
 	});
 }

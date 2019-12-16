@@ -54,8 +54,14 @@ function drawEntity(entity, x, y) {
 }
 
 function updateViewport() {
-	viewX = entities[playerId].x - (canvas.width / 2);
-	viewY = entities[playerId].y - (canvas.height / 2);
+	newViewX = entities[playerId].x - (canvas.width / 2);
+	newViewY = entities[playerId].y - (canvas.height / 2);
+	if (bounds.left <= newViewX && newViewX <= bounds.right - canvas.width) {
+		viewX = newViewX;
+	}
+	if (bounds.upper <= newViewY && newViewY <= bounds.lower - canvas.height) {
+		viewY = newViewY;
+	}
 }
 
 function centerGui() {

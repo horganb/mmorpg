@@ -10,6 +10,7 @@ var updatedEntities = {};
 var deletedEntities = [];
 var land = [];
 var nextId = 0;
+var bounds = {left: -2000, right: 2000, upper: -2000, lower: 2000};
 
 // dependencies
 
@@ -71,7 +72,7 @@ function playerConnect(socket, id) {
 		nextY: 0
 	}
 	updatedEntities[id] = entities[id];
-	socket.emit('init', id);
+	socket.emit('init', [id, bounds]);
 	socket.emit('map', land);
 	socket.emit('update', [entities, []]);
 	nextId++;
@@ -98,14 +99,17 @@ function moveStuff() {
 			var x_y = randomNum(0, 1);
 			var i_d = randomNum(-1, 1);
 			if (x_y == 0) {
-				entities[id].x += i_d * 5;
+				moveEntity(entities[id], i_d * 5, 0)
+				//entities[id].x += i_d * 5;
 			} else {
-				entities[id].y += i_d * 5;
+				moveEntity(entities[id], 0, i_d * 5);
+				//entities[id].y += i_d * 5;
 			}
 			updatedEntities[id] = entities[id];
 		} else if (entities[id].name == 'player') {
-			entities[id].x += entities[id].nextX;
-			entities[id].y += entities[id].nextY;
+			moveEntity(entities[id], entities[id].nextX, entities[id].nextY);
+			//entities[id].x += entities[id].nextX;
+			//entities[id].y += entities[id].nextY;
 			if (entities[id].nextX != 0 || entities[id].nextY != 0) {
 				updatedEntities[id] = entities[id];
 			}
@@ -163,6 +167,15 @@ function resetWorld() {
 function updateSkin(skin, playerId) {
 	entities[playerId].skin = skin;
 	updatedEntities[playerId] = entities[playerId];
+}
+
+function moveEntity(ent, moveX, moveY) {
+	if (ent.y + moveY > bounds.upper && ent.y + moveY < bounds.lower) {
+		ent.y += moveY;
+	}
+	if (ent.x + moveX > bounds.left && ent.x + moveX < bounds.right) {
+		ent.x += moveX;
+	}
 }
 
 

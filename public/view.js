@@ -1,6 +1,4 @@
 const font_size = 20;
-const canvas_width = 700;
-const canvas_height = 600;
 var border_color = 0;
 var border_colors = ['black', 'gray'];
 var viewX = 0;
@@ -13,17 +11,15 @@ const ctx = canvas.getContext("2d");
 setup();
 
 function setup() {
-	canvas.width = canvas_width;
-	canvas.height = canvas_height;
+	centerGui();
 	canvas.color = 'blue';
-	ctx.font = font_size + "px Consolas";
+	document.getElementById('chat').style.visibility = 'visible';
 	var chatBox = document.getElementById('chat-box');
 	chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function viewTick() {
 	updateViewport();
-	shiftBorder();
 	redraw();
 }
 
@@ -47,14 +43,21 @@ function drawEntity(entity, x, y) {
 	}
 }
 
-function shiftBorder() {
-	border_color = (border_color + 1) % border_colors.length;
-	canvas.style.border = '1px solid ' + border_colors[border_color];
+function updateViewport() {
+	viewX = entities[playerId].x - (canvas.width / 2);
+	viewY = entities[playerId].y - (canvas.height / 2);
 }
 
-function updateViewport() {
-	viewX = entities[playerId].x - (canvas_width / 2);
-	viewY = entities[playerId].y - (canvas_height / 2);
+function centerGui() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	ctx.font = font_size + "px Consolas";
+}
+
+function chatBoxOutput(data) {
+	var chatBox = document.getElementById('chat-box');
+	chatBox.value += data;
+	chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 

@@ -1,0 +1,34 @@
+body, div, canvas, html {
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+	background-color: black; 
+	overflow: hidden;
+}
+
+#main-canvas {
+	position: absolute;
+}
+
+#chat-box {
+	position: absolute; 
+	top: 30px;
+	resize: none;
+}
+
+#chat-input {
+	position: absolute;
+	top: 570px;
+}
+
+#toggle-chat {
+	position: absolute; 
+	background-color: black; 
+	color: white; 
+	width: 100px; 
+	font: 20px Consolas; 
+	top: 0px; 
+	left: 0px;
+}

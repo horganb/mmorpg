@@ -4,19 +4,19 @@ var playerId = -1;
 
 socket.on('init', (data) => {
 	playerId = data;
-	document.getElementById('chat-box').innerHTML = 'Welcome, Player ' + playerId + '!';
+	chatBoxOutput('Welcome, Player ' + playerId + '!');
 });
 
 socket.on('chat', (data) => {
-	document.getElementById('chat-box').innerHTML += '\n' + 'Player ' + data.id + ': ' + data.message;
+	chatBoxOutput('\n' + 'Player ' + data.id + ': ' + data.message);
 });
 
 socket.on('player-connect', (data) => {
-	document.getElementById('chat-box').innerHTML += '\n' + 'Player ' + data + ' has joined.';
+	chatBoxOutput('\n' + 'Player ' + data + ' has joined.');
 });
 
 socket.on('player-disconnect', (data) => {
-	document.getElementById('chat-box').innerHTML += '\n' + 'Player ' + data + ' has left.';
+	chatBoxOutput('\n' + 'Player ' + data + ' has left.');
 });
 
 socket.on('update', (data) => {

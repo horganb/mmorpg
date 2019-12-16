@@ -1,28 +1,51 @@
-// dependencies
-var express = require('express');
-var http = require('http');
-var path = require('path');
-var socketIO = require('socket.io');
-
-var app = express();
-var server = http.Server(app);
-var io = socketIO(server);
-
-var nextId = 0;
+// constants
 
 const port = process.env.PORT || 300;
-
 const tick_speed = 170;
 
+// globals
+
+var entities = {};
+var nextId = 0;
+
+// dependencies
+
+const express = require('express');
+const http = require('http');
+const path = require('path');
+const socketIO = require('socket.io');
+
+// setup
+
+const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
+
 app.set('port', port);
+app.use(express.static(__dirname + '/public'));
 
-// routing
-app.use('/static', express.static(__dirname + '/static'));
-
-app.get('/', function(request, response) {
-  response.sendFile(path.join(__dirname, 'index.html'));
+// start server
+server.listen(port, function() {
+  console.log('Starting server on port ' + port);
+  generateWorld();
 });
 
+// player connection handler
+io.on('connection', function(socket) {
+	var id = nextId;
+	playerConnect(socket, id);
+	socket.on('player-move', (data) => playerMove(data, id));
+	socket.on('chat', (data) => playerChat(data, id));
+	socket.on('disconnect', (reason) => playerDisconnect(id));
+});
+
+// set loop
+setInterval(function() {
+	moveStuff();
+	io.sockets.emit('update', entities);
+}, tick_speed);
+
+// reset handler
 app.get('/reset', function(request, response) {
 	var newEntities = {};
 	for (const id in entities) {
@@ -38,27 +61,7 @@ app.get('/reset', function(request, response) {
 	console.log('World reset.');
 });
 
-// start server
-server.listen(port, function() {
-  console.log('Starting server on port ' + port);
-  generateWorld();
-});
-
-var entities = {};
-
-// Add the WebSocket handlers
-io.on('connection', function(socket) {
-	var id = nextId;
-	playerConnect(socket, id);
-	socket.on('player-move', (data) => playerMove(data, id));
-	socket.on('chat', (data) => playerChat(data, id));
-	socket.on('disconnect', (reason) => playerDisconnect(id));
-});
-
-setInterval(function() {
-	moveStuff();
-	io.sockets.emit('update', entities);
-}, tick_speed);
+// helpers
 
 function playerConnect(socket, id) {
 	console.log('player ' + id + ' connected!');
@@ -153,6 +156,8 @@ function playerChat(message, id) {
 		id: id
 	});
 }
+
+
 
 
 

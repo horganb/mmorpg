@@ -1,11 +1,16 @@
 var socket = io();
 var entities = {};
 var playerId = -1;
+var land = [];
 
 socket.on('init', (data) => {
 	playerId = data;
 	chatBoxOutput('Welcome, Player ' + playerId + '!');
 	updateSkin(art.player);
+});
+
+socket.on('map', (data) => {
+	land = data;
 });
 
 socket.on('chat', (data) => {

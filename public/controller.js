@@ -100,7 +100,6 @@ function clickInPlayerRange(range, mouseX, mouseY) {
 }
 
 function windowBlur() {
-	console.log('blurred');
 	keys_pressed = [];
 	clearMove();
 }

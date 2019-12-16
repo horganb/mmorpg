@@ -52,6 +52,50 @@ const art = {
 		], [
 		'g'
 		]
+	],
+	grass2: [
+		[
+		'\'\''
+		], [
+		'gg'
+		]
+	],
+	grass3: [
+		[
+		'\'\'\''
+		], [
+		'ggg'
+		]
+	],
+	sand: [
+		[
+		'.'
+		], [
+		'y'
+		]
+	],	
+	big_puddle: [
+		[
+		'    ~~~~~           ',
+		' ~~~~~~~~~~         ',
+		'~~~~~~~~~~~~~~~     ',
+		'~~~~~~~~~~~~~~      ',
+		'~~~~~~~~~~~~~~      ',
+		' ~~~~~~~~~~~        ',
+		'  ~~~~~~~~~~~       ',
+		' ~~~~~~~~           ',
+		'   ~~~              '
+		], [
+		'    bbbbb           ',
+		' bbbbbbbbbb         ',
+		'bbbbbbbbbbbbbbb     ',
+		'bbbbbbbbbbbbbb      ',
+		'bbbbbbbbbbbbbb      ',
+		' bbbbbbbbbbb        ',
+		'  bbbbbbbbbbb       ',
+		' bbbbbbbb           ',
+		'   bbb              '
+		]
 	]
 }
 

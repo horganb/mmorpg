@@ -25,8 +25,9 @@ function viewTick() {
 
 function redraw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = '#b3ffb3';
+	ctx.fillStyle = 'white';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	land.forEach(drawLand);
 	for (const id in entities) {
 		if (entities[id] !== undefined) {
 			if (entities[id].name == 'player' && entities[id].skin) {
@@ -36,6 +37,11 @@ function redraw() {
 			}
 		}
 	}
+}
+
+function drawLand(block) {
+	ctx.fillStyle = block.color;
+	ctx.fillRect(block.x1 - viewX, block.y1 - viewY, block.width, block.height);
 }
 
 function drawEntity(entity, x, y) {

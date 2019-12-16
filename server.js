@@ -6,6 +6,7 @@ const tick_speed = 120;
 // globals
 
 var entities = {};
+var land = [];
 var nextId = 0;
 
 // dependencies
@@ -14,6 +15,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
+const worldGen = require('./public/world_generator');
 
 // setup
 
@@ -59,13 +61,13 @@ function playerConnect(socket, id) {
 	var playerY = 0;
 	entities[id] = {
 		name: 'player',
-		id: id,
 		x: playerX,
 		y: playerY,
 		nextX: 0,
 		nextY: 0
 	}
 	socket.emit('init', id);
+	socket.emit('map', land);
 	nextId++;
 	io.sockets.emit('player-connect', id);
 }
@@ -101,43 +103,11 @@ function moveStuff() {
 }
 
 function generateWorld() {
-	var bobs = randomNum(6, 12);
-	for (var i = 0; i < bobs; i++) {
-		var x = randomNum(-1000, 1000);
-		var y = randomNum(-1000, 1000);
-		entities[nextId] = {
-			name: 'bob',
-			x: x,
-			y: y
-		}
-		nextId++;
-	}
-	var puds = randomNum(0, 5);
-	for (var i = 0; i < puds; i++) {
-		var x = randomNum(-1000, 1000);
-		var y = randomNum(-1000, 1000);
-		entities[nextId] = {
-			name: 'puddle',
-			x: x,
-			y: y
-		}
-		nextId++;
-	}
-	var grass = randomNum(800, 1000);
-	for (var i = 0; i < grass; i++) {
-		var x = randomNum(-1000, 1000);
-		var y = randomNum(-1000, 1000);
-		entities[nextId] = {
-			name: 'grass',
-			x: x,
-			y: y
-		}
-		nextId++;
-	}
+	nextId = worldGen.generateWorld(nextId, entities, land);
 }
 
 function randomNum(min, max) {
-	return min + Math.floor(Math.random() * (max - min + 1));
+	return worldGen.randomNum(min, max);
 }
 
 function playerChat(message, id) {
@@ -169,10 +139,10 @@ function resetWorld() {
 			newEntities[id] = entities[id];
 		}
 	}
-	console.log('before: ' + entities[theId].name);
 	entities = newEntities;
-	var temp = nextId;
+	land = [];
 	generateWorld();
+	io.sockets.emit('map', land);
 	console.log('World reset.');
 }
 

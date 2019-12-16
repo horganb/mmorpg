@@ -29,7 +29,11 @@ function redraw() {
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	for (const id in entities) {
 		if (entities[id] !== undefined) {
-			drawEntity(art[entities[id].name], entities[id].x, entities[id].y);
+			if (entities[id].name == 'player' && entities[id].skin) {
+				drawEntity(entities[id].skin, entities[id].x, entities[id].y);
+			} else {
+				drawEntity(art[entities[id].name], entities[id].x, entities[id].y);
+			}
 		}
 	}
 }

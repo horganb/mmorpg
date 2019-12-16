@@ -5,6 +5,7 @@ var playerId = -1;
 socket.on('init', (data) => {
 	playerId = data;
 	chatBoxOutput('Welcome, Player ' + playerId + '!');
+	updateSkin(art.player);
 });
 
 socket.on('chat', (data) => {
@@ -71,5 +72,9 @@ function deleteEntity(id) {
 
 function createEntity(name, x, y) {
 	socket.emit('create-entity', {name: name, x: x, y: y});
+}
+
+function updateSkin(skin) {
+	socket.emit('update-skin', skin);
 }
 

@@ -5,10 +5,13 @@ window.onkeydown = keyPressed;
 window.onkeyup = keyReleased;
 window.onmousedown = mouseDown;
 
-setInterval(checkMoves, 2);
+//setInterval(checkMoves, 2);
 
 function keyPressed(e) {
-	keys_pressed.unshift(e.code);
+	if (keys_pressed.length == 0 || keys_pressed[0] != e.code) {
+		keys_pressed.unshift(e.code);
+		checkMoves();
+	}
 	
 	if (e.code == 'Enter') {
 		var chat = document.getElementById('chat-input');
@@ -19,11 +22,38 @@ function keyPressed(e) {
 		} else {
 			chat.focus();
 		}
+	} else if (e.shiftKey && e.key != 'Shift') {
+		art.player[0][0] = art.player[0][0][0] + e.key[0] + art.player[0][0][2];
+		updateSkin(art.player);
 	}
 }
 
 function keyReleased(e) {
 	keys_pressed = keys_pressed.filter((k) => k != e.code);
+	if (keys_pressed.length > 0) {
+		checkMoves();
+	} else {
+		clearMove();
+	}
+}
+
+function checkMoves() {
+	if (!chatSelected) {
+		switch (keys_pressed[0]) {
+			case 'KeyW':
+				moveUp();
+				break;
+			case 'KeyS':
+				moveDown();
+				break;
+			case 'KeyA':
+				moveLeft();
+				break;
+			case 'KeyD':
+				moveRight();
+				break;
+		}
+	}
 }
 
 function mouseDown(e) {
@@ -39,27 +69,6 @@ function mouseDown(e) {
 				}
 			}
 		}
-	}
-}
-
-function checkMoves() {
-	if (keys_pressed.length > 0 && !chatSelected) {
-		switch (keys_pressed[0]) {
-			case 'KeyW':
-				moveUp();
-				break;
-			case 'KeyS':
-				moveDown();
-				break;
-			case 'KeyA':
-				moveLeft();
-				break;
-			case 'KeyD':
-				moveRight();
-				break;
-		}
-	} else {
-		clearMove();
 	}
 }
 

@@ -1,14 +1,15 @@
+const move_keys = ['KeyW', 'KeyS', 'KeyA', 'KeyD'];
+
 var keys_pressed = [];
 var chatSelected = false;
 
 window.onkeydown = keyPressed;
 window.onkeyup = keyReleased;
 window.onmousedown = mouseDown;
-
-//setInterval(checkMoves, 2);
+window.onblur = windowBlur;
 
 function keyPressed(e) {
-	if (keys_pressed.length == 0 || keys_pressed[0] != e.code) {
+	if ((keys_pressed.length == 0 || keys_pressed[0] != e.code) && move_keys.includes(e.code)) {
 		keys_pressed.unshift(e.code);
 		checkMoves();
 	}
@@ -83,6 +84,7 @@ function toggleChat() {
 
 function chatFocused() {
 	chatSelected = true;
+	clearMove();
 }
 
 function chatBlurred() {
@@ -95,6 +97,12 @@ function entityClicked(entity, mouseX, mouseY) {
 
 function clickInPlayerRange(range, mouseX, mouseY) {
 	return entities[playerId].x - range <= mouseX && mouseX <= entities[playerId].x + range && entities[playerId].y - range <= mouseY && mouseY <= entities[playerId].y + range;
+}
+
+function windowBlur() {
+	console.log('blurred');
+	keys_pressed = [];
+	clearMove();
 }
 
 

@@ -40,10 +40,10 @@ function generateWorld(nextId, entities, land) {
 }
 
 function generateLand(land) {
-	for (var i = 0; i < 2; i++) {
-		for (var j = 0; j < 2; j++) {
-			var x = -1000 + 1000 * i;
-			var y = -1000 + 1000 * j;
+	for (var i = 0; i < 4; i++) {
+		for (var j = 0; j < 4; j++) {
+			var x = -2000 + 1000 * i;
+			var y = -2000 + 1000 * j;
 			var width = 1000;
 			var height = 1000;
 			var chosen = randomNum(0, 1);

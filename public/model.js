@@ -37,8 +37,6 @@ socket.on('update', (data) => {
 	viewTick();
 	//date = new Date();
 	//console.log('draw: ' + (date.getTime() - ping));
-	
-	// MAKE DRAWING MORE EFFICIENT
 });
 
 socket.on('reset', (data) => {

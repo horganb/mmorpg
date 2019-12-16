@@ -8,6 +8,8 @@ window.onkeyup = keyReleased;
 window.onmousedown = mouseDown;
 window.onblur = windowBlur;
 
+window.focus();
+
 function keyPressed(e) {
 	if ((keys_pressed.length == 0 || keys_pressed[0] != e.code) && move_keys.includes(e.code)) {
 		keys_pressed.unshift(e.code);

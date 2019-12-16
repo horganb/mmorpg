@@ -38,7 +38,7 @@ function drawEntity(entity, x, y) {
 	for (var i = 0; i < entity[0].length; i++) {
 		for (var j = 0; j < entity[0][i].length; j++) {
 			ctx.fillStyle = color_key[entity[1][i][j]];
-			ctx.fillText(entity[0][i][j], x + (font_size / 1.8)*j - viewX, y + font_size*i - viewY);
+			ctx.fillText(entity[0][i][j], x + (font_size / 1.8)*j - viewX, y + font_size*i - viewY + font_size);
 		}
 	}
 }

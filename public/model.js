@@ -63,3 +63,13 @@ function sendChat(message) {
 	socket.emit('chat', message);
 }
 
+function deleteEntity(id) {
+	if (entities[id].name == 'grass') {
+		socket.emit('delete-entity', id);
+	}
+}
+
+function createEntity(name, x, y) {
+	socket.emit('create-entity', {name: name, x: x, y: y});
+}
+

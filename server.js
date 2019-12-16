@@ -36,6 +36,8 @@ io.on('connection', function(socket) {
 	playerConnect(socket, id);
 	socket.on('player-move', (data) => playerMove(data, id));
 	socket.on('chat', (data) => playerChat(data, id));
+	socket.on('delete-entity', (data) => deleteEntity(data, id));
+	socket.on('create-entity', (data) => createEntity(data, id));
 	socket.on('disconnect', (reason) => playerDisconnect(id));
 });
 
@@ -46,20 +48,7 @@ setInterval(function() {
 }, tick_speed);
 
 // reset handler
-app.get('/reset', function(request, response) {
-	var newEntities = {};
-	for (const id in entities) {
-		if (entities[id].name == 'player') {
-			newEntities[id] = entities[id];
-		}
-	}
-	entities = newEntities;
-	var temp = nextId;
-	nextId = 0;
-	generateWorld();
-	nextId = temp;
-	console.log('World reset.');
-});
+app.get('/reset', resetWorld);
 
 // helpers
 
@@ -151,10 +140,38 @@ function randomNum(min, max) {
 }
 
 function playerChat(message, id) {
-	io.sockets.emit('chat', {
-		message: message, 
-		id: id
-	});
+	if (message == '/reset') {
+		resetWorld();
+	} else {
+		io.sockets.emit('chat', {
+			message: message, 
+			id: id
+		});
+	}
+}
+
+function deleteEntity(itemId, playerId) {
+	delete entities[itemId];
+}
+
+function createEntity(entity, playerId) {
+	entities[nextId] = entity;
+	nextId++;
+}
+
+function resetWorld() {
+	var newEntities = {};
+	for (const id in entities) {
+		if (entities[id].name == 'player') {
+			newEntities[id] = entities[id];
+		}
+	}
+	entities = newEntities;
+	var temp = nextId;
+	nextId = 0;
+	generateWorld();
+	nextId = temp;
+	console.log('World reset.');
 }
 
 

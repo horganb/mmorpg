@@ -6,6 +6,8 @@ const tick_speed = 120;
 // globals
 
 var entities = {};
+var updatedEntities = {};
+var deletedEntities = [];
 var land = [];
 var nextId = 0;
 
@@ -47,7 +49,9 @@ io.on('connection', function(socket) {
 // set loop
 setInterval(function() {
 	moveStuff();
-	io.sockets.emit('update', entities);
+	io.sockets.emit('update', [updatedEntities, deletedEntities]);
+	updatedEntities = {};
+	deletedEntities = [];
 }, tick_speed);
 
 // reset handler
@@ -66,14 +70,17 @@ function playerConnect(socket, id) {
 		nextX: 0,
 		nextY: 0
 	}
+	updatedEntities[id] = entities[id];
 	socket.emit('init', id);
 	socket.emit('map', land);
+	socket.emit('update', [entities, []]);
 	nextId++;
 	io.sockets.emit('player-connect', id);
 }
 
 function playerDisconnect(id) {
 	console.log('player ' + id + ' disconnected.');
+	deletedEntities.push(id);
 	delete entities[id];
 	io.sockets.emit('player-disconnect', id);
 }
@@ -95,9 +102,13 @@ function moveStuff() {
 			} else {
 				entities[id].y += i_d * 5;
 			}
+			updatedEntities[id] = entities[id];
 		} else if (entities[id].name == 'player') {
 			entities[id].x += entities[id].nextX;
 			entities[id].y += entities[id].nextY;
+			if (entities[id].nextX != 0 || entities[id].nextY != 0) {
+				updatedEntities[id] = entities[id];
+			}
 		}
 	}
 }
@@ -122,11 +133,13 @@ function playerChat(message, id) {
 }
 
 function deleteEntity(itemId, playerId) {
+	deletedEntities.push(itemId);
 	delete entities[itemId];
 }
 
 function createEntity(entity, playerId) {
 	entities[nextId] = entity;
+	updatedEntities[nextId] = entities[nextId];
 	nextId++;
 }
 
@@ -142,12 +155,14 @@ function resetWorld() {
 	entities = newEntities;
 	land = [];
 	generateWorld();
+	io.sockets.emit('reset', entities);
 	io.sockets.emit('map', land);
 	console.log('World reset.');
 }
 
 function updateSkin(skin, playerId) {
 	entities[playerId].skin = skin;
+	updatedEntities[playerId] = entities[playerId];
 }
 
 

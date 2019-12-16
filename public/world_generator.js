@@ -6,11 +6,11 @@ module.exports = {
 const global_range = 1000;
 
 const worldGenList = {
-	'bob': {locs: ['desert', 'grasslands'], min: 6, max: 12},
-	'puddle': {locs: ['grasslands'], min: 2, max: 5},
-	'big_puddle': {locs: ['grasslands'], min: 0, max: 4},
-	'grass': {locs: ['grasslands'], min: 800, max: 1000},
-	'sand': {locs: ['desert'], min: 800, max: 1000}
+	'bob': {locs: ['desert', 'grasslands'], density: 6},
+	'puddle': {locs: ['grasslands'], density: 2},
+	'big_puddle': {locs: ['grasslands'], density: 1},
+	'grass': {locs: ['grasslands'], density: 500},
+	'sand': {locs: ['desert'], density: 500}
 }
 
 function generateWorld(nextId, entities, land) {
@@ -20,7 +20,8 @@ function generateWorld(nextId, entities, land) {
 		for (const item in worldGenList) {
 			var vals = worldGenList[item];
 			if (vals.locs.includes(block.name)) {
-				var num = randomNum(vals.min, vals.max);
+				//var num = randomNum(vals.min, vals.max);
+				var num = vals.density * (block.width * block.height) / 1000000;
 				for (var i = 0; i < num; i++) {
 					var x = randomNum(block.x1, block.x1 + block.width);
 					var y = randomNum(block.y1, block.y1 + block.height);

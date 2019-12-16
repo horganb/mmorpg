@@ -2,6 +2,8 @@ var socket = io();
 var entities = {};
 var playerId = -1;
 var land = [];
+var date = new Date();
+var ping = date.getTime();
 
 socket.on('init', (data) => {
 	playerId = data;
@@ -26,6 +28,20 @@ socket.on('player-disconnect', (data) => {
 });
 
 socket.on('update', (data) => {
+	for (const id in data[0]) {
+		entities[id] = data[0][id];
+	}
+	data[1].forEach((id) => {delete entities[id];});
+	//date = new Date();
+	//ping = date.getTime();
+	viewTick();
+	//date = new Date();
+	//console.log('draw: ' + (date.getTime() - ping));
+	
+	// MAKE DRAWING MORE EFFICIENT
+});
+
+socket.on('reset', (data) => {
 	entities = data;
 	viewTick();
 });

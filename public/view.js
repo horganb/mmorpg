@@ -29,7 +29,7 @@ function redraw() {
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	land.forEach(drawLand);
 	for (const id in entities) {
-		if (entities[id] !== undefined) {
+		if (entities[id] !== undefined && withinViewport(entities[id].x, entities[id].y)) {
 			if (entities[id].name == 'player' && entities[id].skin) {
 				drawEntity(entities[id].skin, entities[id].x, entities[id].y);
 			} else {
@@ -70,5 +70,8 @@ function chatBoxOutput(data) {
 	chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+function withinViewport(x, y) {
+	return viewX - 100 <= x && x <= viewX + canvas.width && viewY - 100 <= y && y <= viewY + canvas.height;
+}
 
 

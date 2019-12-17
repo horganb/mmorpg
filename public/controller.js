@@ -33,9 +33,11 @@ function keyPressed(e) {
 		art.player[0][0] = art.player[0][0][0] + e.key[0] + art.player[0][0][2];
 		updateSkin(art.player);
 	} else if (e.keyCode == 67) {
-		toggleChat();
+		toggleUI('chat');
 	} else if (e.keyCode == 73) {
-		toggleInventory();
+		toggleUI('inventory');
+	} else if (e.keyCode == 27) {
+		hideAll();
 	}
 }
 
@@ -83,26 +85,6 @@ function mouseDown(e) {
 	}
 }
 
-function toggleChat() {
-	var chat = document.getElementById('chat');
-	if (chat.style.visibility == 'visible') {
-		chat.style.visibility = 'hidden';
-	} else {
-		chat.style.visibility = 'visible';
-		document.getElementById('inventory').style.visibility = 'hidden';
-	}
-}
-
-function toggleInventory() {
-	var inv = document.getElementById('inventory');
-	if (inv.style.visibility == 'visible') {
-		inv.style.visibility = 'hidden';
-	} else {
-		inv.style.visibility = 'visible';
-		document.getElementById('chat').style.visibility = 'hidden';
-	}
-}
-
 function chatFocused() {
 	chatSelected = true;
 	clearMove();
@@ -123,6 +105,21 @@ function clickInPlayerRange(range, mouseX, mouseY) {
 function windowBlur() {
 	keys_pressed = [];
 	clearMove();
+}
+
+function toggleUI(ui) {
+	var el = document.getElementById(ui);
+	if (el.style.visibility == 'visible') {
+		el.style.visibility = 'hidden';
+	} else {
+		hideAll();
+		el.style.visibility = 'visible';
+	}
+}
+
+function hideAll() {
+	document.getElementById('chat').style.visibility = 'hidden';
+	document.getElementById('inventory').style.visibility = 'hidden';
 }
 
 

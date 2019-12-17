@@ -7,18 +7,11 @@ window.onkeydown = keyPressed;
 window.onkeyup = keyReleased;
 window.onmousedown = mouseDown;
 window.onblur = windowBlur;
-window.onfocus = () => console.log('focused!');
 
 window.focus();
 
 function keyPressed(e) {
-	console.log('key pressed! ' + e.key);
-	if ((keys_pressed.length == 0 || keys_pressed[0] != e.keyCode) && move_keys.includes(e.keyCode)) {
-		keys_pressed.unshift(e.keyCode);
-		checkMoves();
-	}
-	
-	if (e.keyCode == 13) {
+	if (e.keyCode == 13 && document.getElementById('chat').style.visibility == 'visible') {
 		var chat = document.getElementById('chat-input');
 		if (chatSelected) {
 			chat.blur();
@@ -27,9 +20,22 @@ function keyPressed(e) {
 		} else {
 			chat.focus();
 		}
+	}
+	
+	if (chatSelected) {
+		return;
+	}
+	
+	if ((keys_pressed.length == 0 || keys_pressed[0] != e.keyCode) && move_keys.includes(e.keyCode)) {
+		keys_pressed.unshift(e.keyCode);
+		checkMoves();
 	} else if (e.shiftKey && e.keyCode != 16) {
 		art.player[0][0] = art.player[0][0][0] + e.key[0] + art.player[0][0][2];
 		updateSkin(art.player);
+	} else if (e.keyCode == 67) {
+		toggleChat();
+	} else if (e.keyCode == 73) {
+		toggleInventory();
 	}
 }
 
@@ -83,6 +89,17 @@ function toggleChat() {
 		chat.style.visibility = 'hidden';
 	} else {
 		chat.style.visibility = 'visible';
+		document.getElementById('inventory').style.visibility = 'hidden';
+	}
+}
+
+function toggleInventory() {
+	var inv = document.getElementById('inventory');
+	if (inv.style.visibility == 'visible') {
+		inv.style.visibility = 'hidden';
+	} else {
+		inv.style.visibility = 'visible';
+		document.getElementById('chat').style.visibility = 'hidden';
 	}
 }
 
@@ -104,7 +121,6 @@ function clickInPlayerRange(range, mouseX, mouseY) {
 }
 
 function windowBlur() {
-	console.log('blurred!');
 	keys_pressed = [];
 	clearMove();
 }

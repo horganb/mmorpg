@@ -8,12 +8,15 @@ var date = new Date();
 var ping = date.getTime();
 var bounds;
 
+var lifeEssence = 0;
+var gold = 0;
+
 socket.on('init', (data) => {
 	playerId = data[0];
 	bounds = data[1];
 	chatBoxOutput('Welcome, Player ' + playerId + '!');
 	updateSkin(art.player);
-	window.focus();
+	updateInventory();
 });
 
 socket.on('map', (data) => {
@@ -90,15 +93,25 @@ function sendChat(message) {
 
 function deleteEntity(id) {
 	if (entities[id].name == 'grass') {
+		lifeEssence++;
+		updateInventory();
 		socket.emit('delete-entity', id);
 	}
 }
 
 function createEntity(name, x, y) {
-	socket.emit('create-entity', {name: name, x: x, y: y});
+	if (lifeEssence > 0) {
+		lifeEssence--;
+		updateInventory();
+		socket.emit('create-entity', {name: name, x: x, y: y});
+	}
 }
 
 function updateSkin(skin) {
 	socket.emit('update-skin', skin);
+}
+
+function updateInventory() {
+	document.getElementById('inventory').value = 'Gold: ' + gold + '\nLife Essence: ' + lifeEssence;
 }
 

@@ -12,10 +12,7 @@ setup();
 
 function setup() {
 	centerGui();
-	canvas.color = 'blue';
-	document.getElementById('chat').style.visibility = 'visible';
-	var chatBox = document.getElementById('chat-box');
-	chatBox.scrollTop = chatBox.scrollHeight;
+	//document.getElementById('chat').style.visibility = 'visible';
 }
 
 function viewTick() {

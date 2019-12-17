@@ -3,6 +3,20 @@ body, div, canvas, html {
     padding: 0;
 }
 
+button, input, textarea {
+	outline: none;
+}
+
+::selection {
+	background: black;
+	color: white;
+}
+
+::-moz-selection {
+	background: black;
+	color: white;
+}
+
 #main {
 	background-color: black; 
 	overflow: hidden;
@@ -28,8 +42,24 @@ body, div, canvas, html {
 	position: absolute; 
 	background-color: black; 
 	color: white; 
-	width: 100px; 
+	width: 60px; 
 	font: 20px Consolas; 
 	top: 0px; 
 	left: 0px;
+}
+
+#inventory{
+	position: absolute; 
+	top: 30px;
+	resize: none;
+}
+
+#toggle-inventory {
+	position: absolute; 
+	background-color: black; 
+	color: white; 
+	width: 120px; 
+	font: 20px Consolas; 
+	top: 0px; 
+	left: 60px;
 }

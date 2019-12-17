@@ -12,11 +12,13 @@
 	<canvas id="main-canvas">	
 		Unsupported browser. Sorry!
 	</canvas>
-	<span id="chat">
+	<span id="chat" style="visibility: visible;">
 		<input id="chat-input" size="30" onfocus="chatFocused();" onblur="chatBlurred();">
 		<textarea id="chat-box" rows="34" cols="30" readonly></textarea>
 	</span>
-	<button id="toggle-chat" onclick="toggleChat()">CHAT</button>
+	<textarea id="inventory" rows="34" cols="30" style="visibility: hidden;" readonly></textarea>
+	<button id="toggle-chat" onclick="this.blur(); toggleChat();">CHAT</button>
+	<button id="toggle-inventory" onclick="this.blur(); toggleInventory();">INVENTORY</button>
 	
 	<script src="art.js"></script>
 	<script src="model.js"></script>

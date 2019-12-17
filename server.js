@@ -19,12 +19,15 @@ const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
 const worldGen = require('./public/world_generator');
+const mongo = require('mongodb');
+const url = 'mongodb://localhost:300/mydb';
 
 // setup
 
 const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
+const MongoClient = mongo.MongoClient;
 
 app.set('port', port);
 app.use(express.static(__dirname + '/public'));
@@ -34,6 +37,13 @@ server.listen(port, function() {
   console.log('Starting server on port ' + port);
   generateWorld();
 });
+
+/*
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("Database created!");
+  db.close();
+});*/
 
 // player connection handler
 io.on('connection', function(socket) {

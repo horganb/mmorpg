@@ -44,8 +44,9 @@ server.listen(port, function() {
 
 // connect database
 MongoClient.connect(process.env.MONGODB_URI || mongo_url, function(err, client) {
+	console.log('got here');
   if (err) throw err;
-  db = client.db("mydb");
+  db = client.db();
   var myobj = { name: "Setup", address: "Complete" };
   db.collection("customers").insertOne(myobj, function(err, res) {
     if (err) throw err;

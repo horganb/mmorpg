@@ -3,7 +3,10 @@ module.exports = {
 	randomNum: randomNum
 };
 
-const global_range = 1000;
+const tile_size = 2000;
+
+const land_rows = 8;
+const land_cols = 8;
 
 const worldGenList = {
 	'bob': {locs: ['desert', 'grasslands'], density: 6},
@@ -49,12 +52,12 @@ function generateWorld(nextId, entities, land) {
 }
 
 function generateLand(land) {
-	for (var i = 0; i < 4; i++) {
-		for (var j = 0; j < 4; j++) {
-			var x = -2000 + 1000 * i;
-			var y = -2000 + 1000 * j;
-			var width = 1000;
-			var height = 1000;
+	for (var i = 0; i < land_rows; i++) {
+		for (var j = 0; j < land_cols; j++) {
+			var x = -(tile_size * land_rows / 2) + tile_size * i;
+			var y = -(tile_size * land_cols / 2) + tile_size * j;
+			var width = tile_size;
+			var height = tile_size;
 			var chosen = randomNum(0, Object.keys(biomes).length - 1);
 			var name;
 			var color;

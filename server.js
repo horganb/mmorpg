@@ -10,7 +10,7 @@ var updatedEntities = {};
 var deletedEntities = [];
 var land = [];
 var nextId = 0;
-var bounds = {left: -2000, right: 2000, upper: -2000, lower: 2000};
+var bounds = {left: -8000, right: 8000, upper: -8000, lower: 8000};
 
 // dependencies
 

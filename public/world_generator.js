@@ -9,7 +9,7 @@ const land_rows = 8;
 const land_cols = 8;
 
 const worldGenList = {
-	'bob': {locs: ['desert', 'grasslands'], density: 6},
+	'bob': {locs: ['desert', 'grasslands'], density: 6, movable: true},
 	'puddle': {locs: ['grasslands'], density: 2},
 	'big_puddle': {locs: ['grasslands'], density: 1},
 	'grass': {locs: ['grasslands'], density: 500},
@@ -25,7 +25,7 @@ const biomes = {
 	'desert': '#ffa64d'
 }
 
-function generateWorld(nextId, entities, land) {
+function generateWorld(nextId, entities, movableEntities, land) {
 	generateLand(land);
 	
 	land.forEach(function(block) {
@@ -37,10 +37,14 @@ function generateWorld(nextId, entities, land) {
 				for (var i = 0; i < num; i++) {
 					var x = randomNum(block.x1, block.x1 + block.width);
 					var y = randomNum(block.y1, block.y1 + block.height);
-					entities[nextId] = {
+					var entity = {
 						name: item,
 						x: x,
 						y: y
+					}
+					entities[nextId] = entity;
+					if (vals.movable) {
+						movableEntities[nextId] = entity;
 					}
 					nextId++;
 				}				

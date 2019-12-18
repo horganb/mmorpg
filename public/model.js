@@ -39,18 +39,15 @@ socket.on('player-disconnect', (data) => {
 });
 
 socket.on('update', (data) => {
-	serverDate = new Date();
-	console.log('server: ' + (serverDate.getTime() - serverPing));
-	serverPing = serverDate.getTime();
 	for (const id in data[0]) {
 		entities[id] = data[0][id];
 	}
 	data[1].forEach((id) => {delete entities[id];});
-	drawDate = new Date();
-	drawPing = drawDate.getTime();
+	//drawDate = new Date();
+	//drawPing = drawDate.getTime();
 	viewTick();
-	drawDate = new Date();
-	console.log('draw: ' + (drawDate.getTime() - drawPing));
+	//drawDate = new Date();
+	//console.log('draw: ' + (drawDate.getTime() - drawPing));
 });
 
 socket.on('reset', (data) => {

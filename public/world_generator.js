@@ -11,7 +11,15 @@ const worldGenList = {
 	'big_puddle': {locs: ['grasslands'], density: 1},
 	'grass': {locs: ['grasslands'], density: 500},
 	'sand': {locs: ['desert'], density: 500},
-	'tree': {locs: ['grasslands'], density: 2}
+	'tree': {locs: ['grasslands'], density: 2},
+	'grass3': {locs: ['desert'], density: 15},
+	'cactus': {locs: ['desert'], density: 5},
+	'small_cactus': {locs: ['desert'], density: 8}
+}
+
+const biomes = {
+	'grasslands': '#b3ffb3',
+	'desert': '#ffa64d'
 }
 
 function generateWorld(nextId, entities, land) {
@@ -47,16 +55,11 @@ function generateLand(land) {
 			var y = -2000 + 1000 * j;
 			var width = 1000;
 			var height = 1000;
-			var chosen = randomNum(0, 1);
+			var chosen = randomNum(0, Object.keys(biomes).length - 1);
 			var name;
 			var color;
-			if (chosen == 0) {
-				name = 'grasslands';
-				color = '#b3ffb3';
-			} else if (chosen == 1) {
-				name = 'desert';
-				color = '#ffa64d';
-			}
+			name = Object.keys(biomes)[chosen];
+			color = biomes[name];
 			land.push({
 				name: name,
 				color: color,
@@ -67,24 +70,6 @@ function generateLand(land) {
 			});
 		}
 	}
-	/*
-	land.push({
-		name: 'grasslands',
-		color: '#b3ffb3',
-		x1: -1000,
-		y1: -1000,
-		width: 2000,
-		height: 2000
-	});
-	land.push({
-		name: 'desert',
-		color: '#ffa64d',
-		x1: -1000,
-		y1: -2000,
-		width: 2000,
-		height: 1000
-	});
-	*/
 }
 
 function randomNum(min, max) {

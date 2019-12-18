@@ -12,12 +12,12 @@ const color_key = {
 const art = {
 	player: [
 		[
-		'~O~',
-		'-\u2551-',
+		' O ',
+		'-|-',
 		'/ \\'
 		], [
-		'rBr', 
-		'brb', 
+		' B ', 
+		'BBB', 
 		'BBB'
 		]
 	],
@@ -63,7 +63,7 @@ const art = {
 	],
 	grass3: [
 		[
-		'\'\'\''
+		'"""'
 		], [
 		'ggg'
 		]
@@ -120,6 +120,36 @@ const art = {
 		'      gRRg       ',
 		'     RRRRRR      '
 		]
-	]	
+	],
+	cactus: [
+		[
+		'  # #  ',
+		'# # #  ',
+		'# #*  ',
+		'*##   ',
+		'  #:  ',
+		' :#   '
+		], [
+		'gggggg',
+		'gggggg',
+		'gggggg',
+		'gggggg',
+		'gggggg',
+		'gggggg'
+		]
+	],
+	small_cactus: [
+		[
+		'.',
+		'#',
+		'#'
+		], [
+		'g',
+		'g',
+		'g'
+		]
+	]		
 }
+
+const heads = ['O', '0', 'o', '8', '*', 'G', '?'];
 

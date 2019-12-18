@@ -3,7 +3,6 @@
 <head>
 
 	<title>Blackout MMO</title>
-	<script src="/socket.io/socket.io.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles.css">
 
 </head>
@@ -12,14 +11,20 @@
 	<canvas id="main-canvas">	
 		Unsupported browser. Sorry!
 	</canvas>
-	<span id="chat" style="visibility: visible;">
-		<input id="chat-input" size="30" onfocus="chatFocused();" onblur="chatBlurred();">
-		<textarea id="chat-box" rows="34" cols="30" readonly></textarea>
-	</span>
-	<textarea id="inventory" rows="34" cols="30" style="visibility: hidden;" readonly></textarea>
-	<button id="toggle-chat" onclick="this.blur(); toggleUI('chat');">CHAT</button>
-	<button id="toggle-inventory" onclick="this.blur(); toggleUI('inventory');">INVENTORY</button>
 	
+	<span id="chat" class="side-menu">
+		<input id="chat-input" size="30" onfocus="chatFocused();" onblur="chatBlurred();">
+		<textarea id="chat-box" rows="34" readonly></textarea>
+	</span>
+	<textarea id="inventory" class="side-menu" rows="34" readonly></textarea>
+	<canvas id="character" class="side-menu"></canvas>
+	
+	<button id="toggle-chat">CHAT</button>
+	<button id="toggle-inventory">INVENTORY</button>
+	<button id="toggle-character">CHARACTER</button>
+	
+	<script src="jquery-3.4.1.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
 	<script src="art.js"></script>
 	<script src="model.js"></script>
 	<script src="view.js"></script>

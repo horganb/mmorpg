@@ -12,7 +12,6 @@ setup();
 
 function setup() {
 	centerGui();
-	//document.getElementById('chat').style.visibility = 'visible';
 }
 
 function viewTick() {
@@ -34,6 +33,8 @@ function redraw() {
 			}
 		}
 	}
+	
+	drawCharacterUI();
 }
 
 function drawLand(block) {
@@ -42,11 +43,15 @@ function drawLand(block) {
 }
 
 function drawEntity(entity, x, y) {
+	drawStaticEntity(entity, x - viewX, y - viewY);
+}
+
+function drawStaticEntity(entity, x, y) {
 	for (var i = 0; i < entity[0].length; i++) {
 		for (var j = 0; j < entity[0][i].length; j++) {
 			var character = entity[0][i][j];
 			ctx.fillStyle = color_key[entity[1][i][j]];
-			ctx.fillText(character, x + ctx.measureText(character).width*j - viewX, y + font_size*i - viewY + font_size);
+			ctx.fillText(character, x + ctx.measureText(character).width*j, y + font_size*i + font_size);
 		}
 	}
 }
@@ -78,4 +83,21 @@ function withinViewport(x, y) {
 	return viewX - 100 <= x && x <= viewX + canvas.width && viewY - 100 <= y && y <= viewY + canvas.height;
 }
 
+function drawUI() {
+	drawCharacterUI();
+}
+
+function drawCharacterUI() {
+	if ($('#character').is(':visible')) {
+		ctx.fillStyle = 'white';
+		ctx.fillRect(0, 30, 160, 150);
+		ctx.strokeStyle = 'black';
+		ctx.lineWidth = 2;
+		ctx.strokeRect(0, 30, 160, 150);
+		drawStaticEntity(entities[playerId].skin, 60, 70);
+		ctx.fillStyle = 'red';
+		ctx.fillText('[<]', 20, 90);
+		ctx.fillText('[>]', 100, 90);
+	}
+}
 

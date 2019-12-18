@@ -10,8 +10,25 @@ window.onblur = windowBlur;
 
 window.focus();
 
+$('.side-menu').hide();
+toggleUI('chat');
+
+const buttonMap = {
+	'toggle-chat' : 'chat',
+	'toggle-inventory' : 'inventory',
+	'toggle-character' : 'character'
+}
+
+$(document).ready(function(){
+	$('button').click(function() {
+		$(this).blur(); 
+		toggleUI(buttonMap[$(this).attr('id')]);
+	});
+});
+
+
 function keyPressed(e) {
-	if (e.keyCode == 13 && document.getElementById('chat').style.visibility == 'visible') {
+	if (e.keyCode == 13 && $('#chat').is(':visible')) {
 		var chat = document.getElementById('chat-input');
 		if (chatSelected) {
 			chat.blur();
@@ -29,15 +46,23 @@ function keyPressed(e) {
 	if ((keys_pressed.length == 0 || keys_pressed[0] != e.keyCode) && move_keys.includes(e.keyCode)) {
 		keys_pressed.unshift(e.keyCode);
 		checkMoves();
-	} else if (e.shiftKey && e.keyCode != 16) {
-		art.player[0][0] = art.player[0][0][0] + e.key[0] + art.player[0][0][2];
-		updateSkin(art.player);
 	} else if (e.keyCode == 67) {
 		toggleUI('chat');
 	} else if (e.keyCode == 73) {
 		toggleUI('inventory');
+	} else if (e.keyCode == 80) {
+		toggleUI('character');
 	} else if (e.keyCode == 27) {
 		hideAll();
+	} else if (e.keyCode == 37 && $('#character').is(':visible')) {
+		if (playerHead == 0) {
+			playerHead = heads.length - 1;
+		}
+		playerHead = (playerHead - 1) % heads.length;
+		changeHead(heads[playerHead]);
+	} else if (e.keyCode == 39 && $('#character').is(':visible')) {
+		playerHead = (playerHead + 1) % heads.length;
+		changeHead(heads[playerHead]);
 	}
 }
 
@@ -108,18 +133,14 @@ function windowBlur() {
 }
 
 function toggleUI(ui) {
-	var el = document.getElementById(ui);
-	if (el.style.visibility == 'visible') {
-		el.style.visibility = 'hidden';
+	var el = $('#' + ui);
+	if (el.is(':visible')) {
+		el.toggle();
 	} else {
-		hideAll();
-		el.style.visibility = 'visible';
+		$('.side-menu').hide();
+		el.toggle();
+		drawUI();
 	}
-}
-
-function hideAll() {
-	document.getElementById('chat').style.visibility = 'hidden';
-	document.getElementById('inventory').style.visibility = 'hidden';
 }
 
 

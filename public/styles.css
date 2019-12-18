@@ -30,6 +30,7 @@ button, input, textarea {
 	position: absolute; 
 	top: 30px;
 	resize: none;
+	width: 250px;
 }
 
 #chat-input {
@@ -38,28 +39,38 @@ button, input, textarea {
 	top: 570px;
 }
 
-#toggle-chat {
-	position: absolute; 
-	background-color: black; 
-	color: white; 
-	width: 60px; 
-	font: 20px Consolas; 
-	top: 0px; 
-	left: 0px;
-}
-
-#inventory{
+#inventory {
 	position: absolute; 
 	top: 30px;
 	resize: none;
+	width: 250px;
+}
+
+#character {
+	position: absolute; 
+	top: 30px;
+	width: 250;
+	height: 200;
+}
+
+button {
+	position: absolute; 
+	background-color: black; 
+	color: white;
+	font: 20px Consolas;
+}
+
+#toggle-chat {
+	width: 60px; 
+	left: 0px;
 }
 
 #toggle-inventory {
-	position: absolute; 
-	background-color: black; 
-	color: white; 
-	width: 120px; 
-	font: 20px Consolas; 
-	top: 0px; 
+	width: 120px;
 	left: 60px;
+}
+
+#toggle-character {
+	width: 115px;
+	left: 180px;
 }

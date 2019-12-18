@@ -7,6 +7,7 @@ var land = [];
 var date = new Date();
 var ping = date.getTime();
 var bounds;
+var playerHead = 0;
 
 var lifeEssence = 0;
 var gold = 0;
@@ -15,7 +16,7 @@ socket.on('init', (data) => {
 	playerId = data[0];
 	bounds = data[1];
 	chatBoxOutput('Welcome, Player ' + playerId + '!');
-	updateSkin(art.player);
+	sendSkin();
 	updateInventory();
 });
 
@@ -107,11 +108,16 @@ function createEntity(name, x, y) {
 	}
 }
 
-function updateSkin(skin) {
-	socket.emit('update-skin', skin);
-}
-
 function updateInventory() {
 	document.getElementById('inventory').value = 'Gold: ' + gold + '\nLife Essence: ' + lifeEssence;
+}
+
+function changeHead(head) {
+	art.player[0][0] = art.player[0][0][0] + head + art.player[0][0][2];
+	sendSkin();
+}
+
+function sendSkin() {
+	socket.emit('update-skin', art.player);
 }
 

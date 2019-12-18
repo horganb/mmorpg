@@ -16,6 +16,7 @@ var bounds = {left: -8000, right: 8000, upper: -8000, lower: 8000};
 var serverDate = new Date();
 var serverPing = serverDate.getTime();
 
+var db;
 // dependencies
 
 const express = require('express');
@@ -23,15 +24,14 @@ const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
 const worldGen = require('./public/world_generator');
-const mongo = require('mongodb');
-const url = 'mongodb://localhost:300/mydb';
 
 // setup
 
 const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
-const MongoClient = mongo.MongoClient;
+const MongoClient = require('mongodb').MongoClient;
+const mongo_url = "mongodb://localhost:27017/";
 
 app.set('port', port);
 app.use(express.static(__dirname + '/public'));
@@ -40,6 +40,23 @@ app.use(express.static(__dirname + '/public'));
 server.listen(port, function() {
   console.log('Starting server on port ' + port);
   generateWorld();
+});
+
+// connect database
+MongoClient.connect(process.env.MONGODB_URI || mongo_url, function(err, client) {
+  if (err) throw err;
+  db = client.db("mydb");
+  var myobj = { name: "Setup", address: "Complete" };
+  db.collection("customers").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    client.close();
+  });
+  db.collection("customers").findOne({}, function(err, result) {
+    if (err) throw err;
+    console.log(result.name);
+    client.close();
+  });
 });
 
 /*
@@ -96,7 +113,8 @@ function playerConnect(socket, id) {
 	updatedEntities[id] = entities[id];
 	socket.emit('init', [id, bounds]);
 	socket.emit('map', land);
-	socket.emit('update', [entities, []]);
+	socket.emit('reset', entities);
+	//socket.emit('update', [entities, []]);
 	nextId++;
 	io.sockets.emit('player-connect', id);
 }

@@ -8,20 +8,52 @@
 </head>
 <body id="main" onresize="centerGui();">
 
-	<canvas id="main-canvas">	
-		Unsupported browser. Sorry!
-	</canvas>
+	<div id="main-area">
+		<canvas id="main-canvas">
+			Unsupported browser. Sorry!
+		</canvas>
+		<canvas id="front-canvas"></canvas>
+	</div>
 	
-	<span id="chat" class="side-menu">
-		<input id="chat-input" size="30" onfocus="chatFocused();" onblur="chatBlurred();">
-		<textarea id="chat-box" rows="34" readonly></textarea>
-	</span>
-	<textarea id="inventory" class="side-menu" rows="34" readonly></textarea>
-	<canvas id="character" class="side-menu"></canvas>
-	
-	<button id="toggle-chat">CHAT</button>
-	<button id="toggle-inventory">INVENTORY</button>
-	<button id="toggle-character">CHARACTER</button>
+	<div id="gui">
+		<span id="chat" class="side-menu">
+			<input id="chat-input" size="30">
+			<textarea id="chat-box" rows="34" readonly></textarea>
+		</span>
+		<textarea id="inventory" class="side-menu" rows="34" readonly></textarea>
+		<canvas id="character" class="side-menu"></canvas>
+		
+		<form id="create-form" class="right-menu">
+			Username:<br>
+			<input id="create-user" type="text"><br>
+			Password:<br>
+			<input id="create-password" type="password"><br>
+			Confirm Password:<br>
+			<input id="create-conf-password" type="password"><br>
+			<p id="create-error" class="error"></p>
+			<input id="create-button" type="button" value="Create">
+		</form>
+		
+		<form id="login-form" class="right-menu">
+			Username:<br>
+			<input id="login-user" type="text"><br>
+			Password:<br>
+			<input id="login-password" type="password"><br>
+			<p id="login-error" class="error"></p>
+			<input id="login-button" type="button" value="Log In">
+		</form>
+		
+		<span class="game-menu">
+			<button id="toggle-chat" data-menu="chat">CHAT</button>
+			<button id="toggle-inventory" data-menu="inventory">INVENTORY</button>
+			<button id="toggle-character" data-menu="character">CHARACTER</button>
+		</span>
+		
+		<span class="account-menu">
+			<button id="create-account" data-menu="create-form">CREATE ACCOUNT</button>
+			<button id="login" data-menu="login-form">LOG IN</button>
+		</span>
+	</div>
 	
 	<script src="jquery-3.4.1.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>

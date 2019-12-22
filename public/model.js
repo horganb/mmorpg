@@ -27,16 +27,38 @@ socket.on('map', (data) => {
 });
 
 socket.on('chat', (data) => {
-	chatBoxOutput('\n' + 'Player ' + data.id + ': ' + data.message);
+	chatBoxOutput(data.id + ': ' + data.message);
 });
 
 socket.on('player-connect', (data) => {
-	chatBoxOutput('\n' + 'Player ' + data + ' has joined.');
+	chatBoxOutput('Player ' + data + ' has joined.');
 });
 
 socket.on('player-disconnect', (data) => {
-	chatBoxOutput('\n' + 'Player ' + data + ' has left.');
+	chatBoxOutput(data + ' has left.');
 });
+
+socket.on('load', (data) => {
+	playerHead = heads.indexOf(data.data.skin[0][0][1]);
+	changeHead(heads[playerHead]);
+	lifeEssence = data.lifeEssence;
+	gold = data.gold;
+	updateInventory();
+});
+
+socket.on('logged-in', (data) => {
+	$('.account-menu').hide();
+	$('.right-menu').hide();
+});
+
+socket.on('username-taken', (data) => {
+	$('#create-error').html('Username unavailable.');
+});
+
+socket.on('login-not-found', (data) => {
+	$('#login-error').html('Username or password incorrect.');
+});
+
 
 socket.on('update', (data) => {
 	for (const id in data[0]) {
@@ -99,6 +121,7 @@ function deleteEntity(id) {
 		lifeEssence++;
 		updateInventory();
 		socket.emit('delete-entity', id);
+		socket.emit('update', {lifeEssence: lifeEssence});
 	}
 }
 
@@ -121,5 +144,23 @@ function changeHead(head) {
 
 function sendSkin() {
 	socket.emit('update-skin', art.player);
+}
+
+function createAccount(user, pass) {
+	socket.emit('create-account', getAccountInfo(user, pass));
+}
+
+function login(user, pass) {
+	socket.emit('login', getAccountInfo(user, pass));
+}
+
+function getAccountInfo(user, pass) {
+	return {
+		username: user,
+		password: pass,
+		lifeEssence: lifeEssence,
+		gold: gold,
+		data: entities[playerId]
+	};
 }
 

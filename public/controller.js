@@ -10,36 +10,56 @@ window.onblur = windowBlur;
 
 window.focus();
 
-$('.side-menu').hide();
-toggleUI('chat');
-
-const buttonMap = {
-	'toggle-chat' : 'chat',
-	'toggle-inventory' : 'inventory',
-	'toggle-character' : 'character'
-}
-
 $(document).ready(function(){
+	$('.side-menu').hide();
+	$('.right-menu').hide();
+	//toggleUI('chat');
 	$('button').click(function() {
-		$(this).blur(); 
-		toggleUI(buttonMap[$(this).attr('id')]);
+		$(this).blur();
+	});
+	$('.game-menu').children().click(function() {
+		toggleUI($(this).attr('data-menu'));
+	});
+	$('.account-menu').children().click(function() {
+		toggleAccountUI($(this).attr('data-menu'));
+	});
+	$('input').focus(function() {
+		clearMove();
+	});
+	$('#create-button').click(function() {
+		handleCreateAccount($('#create-user').val(), $('#create-password').val(), $('#create-conf-password').val());
+		$(this).blur();
+	});
+	$('#login-button').click(function() {
+		handleLogin($('#login-user').val(), $('#login-password').val());
+		$(this).blur();
 	});
 });
 
 
 function keyPressed(e) {
-	if (e.keyCode == 13 && $('#chat').is(':visible')) {
-		var chat = document.getElementById('chat-input');
-		if (chatSelected) {
-			chat.blur();
-			sendChat(chat.value);
-			chat.value = '';
-		} else {
-			chat.focus();
+	if (e.keyCode == 13) {
+		if ($('#chat').is(':visible')) {
+			var chat = document.getElementById('chat-input');
+			if ($('#chat-input').is(':focus')) {
+				chat.blur();
+				if (chat.value != '') {
+					sendChat(chat.value);
+				}
+				chat.value = '';
+			} else {
+				chat.focus();
+			}
+		} else if ($('#create-conf-password').is(':focus')) {
+			handleCreateAccount($('#create-user').val(), $('#create-password').val(), $('#create-conf-password').val());
+			$('#create-conf-password').blur();
+		} else if ($('#login-password').is(':focus')) {
+			handleLogin($('#login-user').val(), $('#login-password').val());
+			$('#login-password').blur();
 		}
 	}
 	
-	if (chatSelected) {
+	if ($('input').is(':focus')) {
 		return;
 	}
 	
@@ -53,10 +73,10 @@ function keyPressed(e) {
 	} else if (e.keyCode == 80) {
 		toggleUI('character');
 	} else if (e.keyCode == 27) {
-		hideAll();
+		$('.side-menu').hide();
 	} else if (e.keyCode == 37 && $('#character').is(':visible')) {
 		if (playerHead == 0) {
-			playerHead = heads.length - 1;
+			playerHead = heads.length;
 		}
 		playerHead = (playerHead - 1) % heads.length;
 		changeHead(heads[playerHead]);
@@ -76,7 +96,7 @@ function keyReleased(e) {
 }
 
 function checkMoves() {
-	if (!chatSelected) {
+	if (!$('input').is(':focus')) {
 		switch (keys_pressed[0]) {
 			case 87:
 				moveUp();
@@ -110,15 +130,6 @@ function mouseDown(e) {
 	}
 }
 
-function chatFocused() {
-	chatSelected = true;
-	clearMove();
-}
-
-function chatBlurred() {
-	chatSelected = false;
-}
-
 function entityClicked(entity, mouseX, mouseY) {
 	return clickInPlayerRange(100, mouseX, mouseY) && Math.abs(entity.x - mouseX) < 15 && Math.abs(entity.y - mouseY) < 15;
 }
@@ -139,15 +150,37 @@ function toggleUI(ui) {
 	} else {
 		$('.side-menu').hide();
 		el.toggle();
-		drawUI();
 	}
 }
 
+function toggleAccountUI(ui) {
+	var el = $('#' + ui);
+	if (el.is(':visible')) {
+		el.toggle();
+	} else {
+		$('.right-menu').hide();
+		el.toggle();
+	}
+}
 
+function handleCreateAccount(user, pass, confPass) {
+	if (user.length == 0 || pass.length == 0) {
+		$('#create-error').html('You must enter a username and password.');
+	} else if (pass != confPass) {
+		$('#create-error').html('Passwords do not match.');
+	} else {
+		$('#create-error').html('');
+		createAccount(user, pass);
+		//console.log('c okay');
+	}
+}
 
-
-
-
-
-
-
+function handleLogin(user, pass) {
+	if (user.length == 0 || pass.length == 0) {
+		$('#login-error').html('You must enter a username and password.');
+	} else {
+		$('#login-error').html('');
+		login(user, pass);
+		//console.log('l okay');
+	}
+}

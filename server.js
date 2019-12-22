@@ -17,6 +17,7 @@ var serverDate = new Date();
 var serverPing = serverDate.getTime();
 
 var db;
+
 // dependencies
 
 const express = require('express');
@@ -31,7 +32,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
 const MongoClient = require('mongodb').MongoClient;
-const mongo_url = "mongodb://localhost:27017/";
+const mongo_url = process.env.MONGODB_URI || "mongodb://localhost:27017/";
 
 app.set('port', port);
 app.use(express.static(__dirname + '/public'));
@@ -43,40 +44,28 @@ server.listen(port, function() {
 });
 
 // connect database
-MongoClient.connect(process.env.MONGODB_URI || mongo_url, function(err, client) {
-	console.log('got here');
+MongoClient.connect(mongo_url, function(err, client) {
   if (err) throw err;
+  console.log('Connected to database: ' + mongo_url);
   db = client.db();
-  var myobj = { name: "Setup", address: "Complete" };
-  db.collection("customers").insertOne(myobj, function(err, res) {
-    if (err) throw err;
-    console.log("1 document inserted");
-    client.close();
-  });
-  db.collection("customers").findOne({}, function(err, result) {
-    if (err) throw err;
-    console.log(result.name);
-    client.close();
-  });
 });
-
-/*
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("Database created!");
-  db.close();
-});*/
 
 // player connection handler
 io.on('connection', function(socket) {
 	var id = nextId;
+	var userEntry = {};
+	
 	playerConnect(socket, id);
+	
 	socket.on('player-move', (data) => playerMove(data, id));
-	socket.on('chat', (data) => playerChat(data, id));
+	socket.on('chat', (data) => playerChat(data, userEntry.username || ('Player ' + id), id));
 	socket.on('delete-entity', (data) => deleteEntity(data, id));
 	socket.on('create-entity', (data) => createEntity(data, id));
 	socket.on('update-skin', (data) => updateSkin(data, id));
-	socket.on('disconnect', (reason) => playerDisconnect(id));
+	socket.on('disconnect', (reason) => playerDisconnect(id, userEntry));
+	socket.on('create-account', (data) => createAccount(data, id, socket, userEntry));
+	socket.on('login', (data) => login(data, id, socket, userEntry));
+	socket.on('update', (data) => updateEntry(data, id, socket, userEntry));
 });
 
 // set loop
@@ -104,6 +93,7 @@ function playerConnect(socket, id) {
 	var playerY = 0;
 	var person = {
 		name: 'player',
+		idd: id,
 		x: playerX,
 		y: playerY,
 		nextX: 0,
@@ -115,17 +105,23 @@ function playerConnect(socket, id) {
 	socket.emit('init', [id, bounds]);
 	socket.emit('map', land);
 	socket.emit('reset', entities);
-	//socket.emit('update', [entities, []]);
 	nextId++;
 	io.sockets.emit('player-connect', id);
 }
 
-function playerDisconnect(id) {
+function playerDisconnect(id, userEntry) {
+	if (userEntry.username) {
+		var query = {username: userEntry.username};
+		var newValues = { $set: userEntry };
+		db.collection("players").updateOne(query, newValues, function(err, res) {
+			if (err) throw err;
+		});		
+	}
 	console.log('player ' + id + ' disconnected.');
 	deletedEntities.push(id);
 	delete entities[id];
 	delete movableEntities[id];
-	io.sockets.emit('player-disconnect', id);
+	io.sockets.emit('player-disconnect', (userEntry.username || ('Player ' + id)));
 }
 
 function playerMove(data, id) {
@@ -163,13 +159,13 @@ function randomNum(min, max) {
 	return worldGen.randomNum(min, max);
 }
 
-function playerChat(message, id) {
+function playerChat(message, user, id) {
 	if (message == '/reset') {
 		resetWorld();
 	} else {
 		io.sockets.emit('chat', {
-			message: message, 
-			id: id
+			message: message,
+			id: user
 		});
 	}
 }
@@ -215,6 +211,52 @@ function moveEntity(ent, moveX, moveY) {
 	}
 	if (ent.x + moveX > bounds.left && ent.x + moveX < bounds.right) {
 		ent.x += moveX;
+	}
+}
+
+function createAccount(data, id, socket, userEntry) {
+	var query = { username: data.username };
+	db.collection("players").findOne(query, function(err, result) {
+		if (err) throw err;
+		if (result) {
+			socket.emit('username-taken', data.user);
+		} else {
+			for (const prop in data) {
+				userEntry[prop] = data[prop]
+			}
+			db.collection("players").insertOne(userEntry, function(err, res) {
+				if (err) throw err;
+				socket.emit('logged-in', data.username);
+				console.log('User ' + data.username + ' created!');
+			});
+		}
+	});
+}
+
+function login(data, id, socket, userEntry) {
+	var query = { username: data.username, password: data.password };
+	db.collection("players").findOne(query, function(err, result) {
+		if (err) throw err;
+		if (result) {
+			console.log('User ' + data.username + ' logged in!');
+			for (const prop in result) {
+				userEntry[prop] = result[prop]
+			}
+			var res = result.data;
+			entities[id] = res;
+			movableEntities[id] = res;
+			updatedEntities[id] = res;
+			socket.emit('load', result);
+			socket.emit('logged-in', data.username);
+		} else {
+			socket.emit('login-not-found', data.username);
+		}
+	});
+}
+
+function updateEntry(data, id, socket, userEntry) {
+	if (userEntry.username) {
+		Object.assign(userEntry, data);
 	}
 }
 

@@ -22,13 +22,24 @@ button, input, textarea {
 	overflow: hidden;
 }
 
+#gui {
+	position: relative;
+	z-index: 2;
+}
+
 #main-canvas {
 	position: absolute;
+	z-index: 0;
+}
+
+#front-canvas {
+	position: absolute;
+	z-index: 1;
 }
 
 #chat-box {
-	position: absolute; 
-	top: 30px;
+	position: absolute;
+	top: 0px;
 	resize: none;
 	width: 250px;
 }
@@ -36,41 +47,43 @@ button, input, textarea {
 #chat-input {
 	position: absolute;
 	font-family: Consolas; 
-	top: 570px;
+	top: 540px;
 }
 
-#inventory {
+#character {
+	width: 250px;
+	height: 200px;
+}
+
+button {
 	position: absolute; 
+	background-color: black;
+	color: white;
+	font: 20px Consolas;
+}
+
+.side-menu {
+	position: absolute;
 	top: 30px;
 	resize: none;
 	width: 250px;
 }
 
-#character {
-	position: absolute; 
+.right-menu {
+	position: absolute;
+	background-color: white;
+	right: 0px;
 	top: 30px;
-	width: 250;
-	height: 200;
+	width: 200px;
+	border-style: solid;
+	padding: 7px;
+	font-family: Consolas;
 }
 
-button {
-	position: absolute; 
-	background-color: black; 
-	color: white;
-	font: 20px Consolas;
+input {
+	font-family: Consolas;
 }
 
-#toggle-chat {
-	width: 60px; 
-	left: 0px;
-}
-
-#toggle-inventory {
-	width: 120px;
-	left: 60px;
-}
-
-#toggle-character {
-	width: 115px;
-	left: 180px;
+.error {
+	color: red;
 }

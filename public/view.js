@@ -5,10 +5,30 @@ var viewX = 0;
 var viewY = 0;
 
 const canvas = document.getElementById("main-canvas");
+const frontCanvas = document.getElementById("front-canvas");
 
 const ctx = canvas.getContext("2d");
+const fctx = frontCanvas.getContext("2d");
+
+$(document).ready(function(){
+	// position top-left menu
+	var curPos = 0;
+	$('.game-menu').children().each(function() {
+		$(this).css("left", curPos);
+		curPos += parseInt($(this).css('width'), 10);
+	});
+	// position top-right menu
+	curPos = 0;
+	$($('.account-menu').children().get().reverse()).each(function() {
+		$(this).css("right", curPos);
+		curPos += parseInt($(this).css('width'), 10);
+	});
+});
 
 setup();
+
+// set GUI loop
+setInterval(guiTick, 5);
 
 function setup() {
 	centerGui();
@@ -19,6 +39,11 @@ function viewTick() {
 	redraw();
 }
 
+function guiTick() {
+	fctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+	drawCharacterUI();
+}
+
 function redraw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = 'white';
@@ -27,14 +52,14 @@ function redraw() {
 	for (const id in entities) {
 		if (entities[id] !== undefined && withinViewport(entities[id].x, entities[id].y)) {
 			if (entities[id].name == 'player' && entities[id].skin) {
-				drawEntity(entities[id].skin, entities[id].x, entities[id].y);
+				drawEntity(entities[id].skin, entities[id].x, entities[id].y, ctx);
 			} else {
-				drawEntity(art[entities[id].name], entities[id].x, entities[id].y);
+				drawEntity(art[entities[id].name], entities[id].x, entities[id].y, ctx);
 			}
 		}
 	}
-	
 	drawCharacterUI();
+
 }
 
 function drawLand(block) {
@@ -42,16 +67,16 @@ function drawLand(block) {
 	ctx.fillRect(block.x1 - viewX, block.y1 - viewY, block.width, block.height);
 }
 
-function drawEntity(entity, x, y) {
-	drawStaticEntity(entity, x - viewX, y - viewY);
+function drawEntity(entity, x, y, context) {
+	drawStaticEntity(entity, x - viewX, y - viewY, context);
 }
 
-function drawStaticEntity(entity, x, y) {
+function drawStaticEntity(entity, x, y, context) {
 	for (var i = 0; i < entity[0].length; i++) {
 		for (var j = 0; j < entity[0][i].length; j++) {
 			var character = entity[0][i][j];
-			ctx.fillStyle = color_key[entity[1][i][j]];
-			ctx.fillText(character, x + ctx.measureText(character).width*j, y + font_size*i + font_size);
+			context.fillStyle = color_key[entity[1][i][j]];
+			context.fillText(character, x + context.measureText(character).width*j, y + font_size*i + font_size);
 		}
 	}
 }
@@ -68,14 +93,15 @@ function updateViewport() {
 }
 
 function centerGui() {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	$('#main-area').children().attr("width", window.innerWidth);
+	$('#main-area').children().attr("height", window.innerHeight);
 	ctx.font = font_size + "px Consolas";
+	fctx.font = font_size + "px Consolas";
 }
 
 function chatBoxOutput(data) {
 	var chatBox = document.getElementById('chat-box');
-	chatBox.value += data;
+	chatBox.value += data + '\n';
 	chatBox.scrollTop = chatBox.scrollHeight;
 }
 
@@ -89,15 +115,15 @@ function drawUI() {
 
 function drawCharacterUI() {
 	if ($('#character').is(':visible')) {
-		ctx.fillStyle = 'white';
-		ctx.fillRect(0, 30, 160, 150);
-		ctx.strokeStyle = 'black';
-		ctx.lineWidth = 2;
-		ctx.strokeRect(0, 30, 160, 150);
-		drawStaticEntity(entities[playerId].skin, 60, 70);
-		ctx.fillStyle = 'red';
-		ctx.fillText('[<]', 20, 90);
-		ctx.fillText('[>]', 100, 90);
+		fctx.fillStyle = 'white';
+		fctx.fillRect(0, 30, 160, 150);
+		fctx.strokeStyle = 'black';
+		fctx.lineWidth = 2;
+		fctx.strokeRect(0, 30, 160, 150);
+		drawStaticEntity(entities[playerId].skin, 60, 70, fctx);
+		fctx.fillStyle = 'red';
+		fctx.fillText('[<]', 20, 90);
+		fctx.fillText('[>]', 100, 90);
 	}
 }
 

@@ -34,6 +34,8 @@ $(document).ready(function(){
 		handleLogin($('#login-user').val(), $('#login-password').val());
 		$(this).blur();
 	});
+	//document.getElementById('audio-1').play();
+	
 });
 
 
@@ -144,6 +146,8 @@ function windowBlur() {
 }
 
 function toggleUI(ui) {
+	$('#audio-2')[0].currentTime = 0;
+	$('#audio-2')[0].play();
 	var el = $('#' + ui);
 	if (el.is(':visible')) {
 		el.toggle();

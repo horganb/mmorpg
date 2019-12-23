@@ -87,3 +87,13 @@ input {
 .error {
 	color: red;
 }
+
+#logged-in-text {
+	position: absolute;
+	display: none;
+	color: black;
+	font: 20px Consolas;
+	right: 0px;
+	top: 0px;
+	margin: 5px;
+}

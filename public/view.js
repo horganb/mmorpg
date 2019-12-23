@@ -120,7 +120,7 @@ function drawCharacterUI() {
 		fctx.strokeStyle = 'black';
 		fctx.lineWidth = 2;
 		fctx.strokeRect(0, 30, 160, 150);
-		drawStaticEntity(entities[playerId].skin, 60, 70, fctx);
+		drawStaticEntity(art.player, 60, 70, fctx);
 		fctx.fillStyle = 'red';
 		fctx.fillText('[<]', 20, 90);
 		fctx.fillText('[>]', 100, 90);

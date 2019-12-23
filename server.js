@@ -65,7 +65,7 @@ io.on('connection', function(socket) {
 	socket.on('disconnect', (reason) => playerDisconnect(id, userEntry));
 	socket.on('create-account', (data) => createAccount(data, id, socket, userEntry));
 	socket.on('login', (data) => login(data, id, socket, userEntry));
-	socket.on('update', (data) => updateEntry(data, id, socket, userEntry));
+	socket.on('update-player', (data) => updateEntry(data, id, socket, userEntry));
 });
 
 // set loop

@@ -49,6 +49,8 @@ socket.on('load', (data) => {
 socket.on('logged-in', (data) => {
 	$('.account-menu').hide();
 	$('.right-menu').hide();
+	$('#logged-in-text').html(data);
+	$('#logged-in-text').show();
 });
 
 socket.on('username-taken', (data) => {
@@ -62,6 +64,14 @@ socket.on('login-not-found', (data) => {
 
 socket.on('update', (data) => {
 	for (const id in data[0]) {
+		if (entities[id] && (entities[id].x != data[0][id].x || entities[id].y != data[0][id].y) && data[0][id].name == 'player') {
+			var audio = $('#audio-1')[0];
+			audio.volume = Math.max(((1000 - distanceFromPlayer(entities[id].x, entities[id].y)) / 1000), 0);
+			if (audio.currentTime > 0.3) {
+				audio.currentTime = 0;
+			}
+			audio.play();
+		}
 		entities[id] = data[0][id];
 	}
 	data[1].forEach((id) => {delete entities[id];});
@@ -121,7 +131,7 @@ function deleteEntity(id) {
 		lifeEssence++;
 		updateInventory();
 		socket.emit('delete-entity', id);
-		socket.emit('update', {lifeEssence: lifeEssence});
+		socket.emit('update-player', {lifeEssence: lifeEssence});
 	}
 }
 
@@ -164,3 +174,6 @@ function getAccountInfo(user, pass) {
 	};
 }
 
+function distanceFromPlayer(x, y) {
+	return Math.sqrt(Math.pow(entities[playerId].x - x, 2) + Math.pow(entities[playerId].y - y, 2));
+}

@@ -3,9 +3,13 @@ const move_keys = [87, 83, 65, 68];
 var keys_pressed = [];
 var chatSelected = false;
 
+var mouse_x = 0;
+var mouse_y = 0;
+
 window.onkeydown = keyPressed;
 window.onkeyup = keyReleased;
 window.onmousedown = mouseDown;
+window.onmousemove = mouseMove;
 window.onblur = windowBlur;
 
 window.focus();
@@ -124,7 +128,7 @@ function mouseDown(e) {
 			createEntity('grass', adjX, adjY);
 		} else {
 			for (const id in entities) {
-				if (entities[id] !== undefined && entityClicked(entities[id], adjX, adjY)) {
+				if (entities[id] !== undefined && mouseOnEntity(entities[id], adjX, adjY)) {
 					deleteEntity(id);
 				}
 			}
@@ -132,12 +136,38 @@ function mouseDown(e) {
 	}
 }
 
-function entityClicked(entity, mouseX, mouseY) {
-	return clickInPlayerRange(100, mouseX, mouseY) && Math.abs(entity.x - mouseX) < 15 && Math.abs(entity.y - mouseY) < 15;
+function mouseMove(e) {
+	mouse_x = e.clientX;
+	mouse_y = e.clientY;
+}
+
+function mouseOnEntity(entity, mouseX, mouseY) {
+	return entity.x < mouseX && mouseX < entity.x + getArtWidth(entity.name) && entity.y < mouseY && mouseY < entity.y + getArtHeight(entity.name);
 }
 
 function clickInPlayerRange(range, mouseX, mouseY) {
 	return entities[playerId].x - range <= mouseX && mouseX <= entities[playerId].x + range && entities[playerId].y - range <= mouseY && mouseY <= entities[playerId].y + range;
+}
+
+function currentMouseOnEntity(entity) {
+	var adjX = mouse_x + viewX;
+	var adjY = mouse_y + viewY;
+	return mouseOnEntity(entity, adjX, adjY);
+}
+
+function distanceBetween(ent1, ent2) {
+	/*
+	if both overlapping
+		return 0
+	else if Xes are overlapping
+		return difference in Ys => min(B/T, T/B)
+	else if Ys are overlapping
+		...
+	else
+		return min(BR/TL, BL/TR, TL/BR, TR/BL)
+	*/
+	//if () {
+	//}
 }
 
 function windowBlur() {
@@ -175,7 +205,6 @@ function handleCreateAccount(user, pass, confPass) {
 	} else {
 		$('#create-error').html('');
 		createAccount(user, pass);
-		//console.log('c okay');
 	}
 }
 
@@ -185,6 +214,5 @@ function handleLogin(user, pass) {
 	} else {
 		$('#login-error').html('');
 		login(user, pass);
-		//console.log('l okay');
 	}
 }

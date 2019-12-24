@@ -77,65 +77,65 @@ const art = {
 	],	
 	big_puddle: [
 		[
-		'    ~~~~~           ',
-		' ~~~~~~~~~~         ',
-		'~~~~~~~~~~~~~~~     ',
-		'~~~~~~~~~~~~~~      ',
-		'~~~~~~~~~~~~~~      ',
-		' ~~~~~~~~~~~        ',
-		'  ~~~~~~~~~~~       ',
-		' ~~~~~~~~           ',
-		'   ~~~              '
+		'    ~~~~~      ',
+		' ~~~~~~~~~~    ',
+		'~~~~~~~~~~~~~~~',
+		'~~~~~~~~~~~~~~ ',
+		'~~~~~~~~~~~~~~ ',
+		' ~~~~~~~~~~~   ',
+		'  ~~~~~~~~~~~  ',
+		' ~~~~~~~~      ',
+		'   ~~~         '
 		], [
-		'    bbbbb           ',
-		' bbbbbbbbbb         ',
-		'bbbbbbbbbbbbbbb     ',
-		'bbbbbbbbbbbbbb      ',
-		'bbbbbbbbbbbbbb      ',
-		' bbbbbbbbbbb        ',
-		'  bbbbbbbbbbb       ',
-		' bbbbbbbb           ',
-		'   bbb              '
+		'    bbbbb      ',
+		' bbbbbbbbbb    ',
+		'bbbbbbbbbbbbbbb',
+		'bbbbbbbbbbbbbb ',
+		'bbbbbbbbbbbbbb ',
+		' bbbbbbbbbbb   ',
+		'  bbbbbbbbbbb  ',
+		' bbbbbbbb      ',
+		'   bbb         '
 		]
 	],
 	tree: [
 		[
-		'    ouo=uuuo     ',
-		'  ~u=o~ouu~~=o   ',
-		'  u~~~u=uu~uoo   ',
-		'  uuo~~ou=o~uo   ',
-		'    ou ||ouu     ',
-		'       ||        ',
-		'       ||        ',
-		'      .||.       ',
-		'     ``````      '
+		'  ouo=uuuo  ',
+		'~u=o~ouu~~=o',
+		'u~~~u=uu~uoo',
+		'uuo~~ou=o~uo',
+		'  ou ||ouu  ',
+		'     ||     ',
+		'     ||     ',
+		'    .||.    ',
+		'   ``````   '
 		], [
-		'    gggggggg     ',
-		'  ggRgggggggRg   ',
-		'  gggggRgggggg   ',
-		'  gggggggRgggg   ',
-		'    gg RRggg     ',
-		'       RR        ',
-		'       RR        ',
-		'      gRRg       ',
-		'     RRRRRR      '
+		'  gggggggg  ',
+		'ggRgggggggRg',
+		'gggggRgggggg',
+		'gggggggRgggg',
+		'  gg RRggg  ',
+		'     RR     ',
+		'     RR     ',
+		'    gRRg    ',
+		'   RRRRRR   '
 		]
 	],
 	cactus: [
 		[
-		'  # #  ',
-		'# # #  ',
-		'# #*  ',
-		'*##   ',
-		'  #:  ',
-		' :#   '
+		'  # #',
+		'# # #',
+		'# #* ',
+		'*##  ',
+		'  #: ',
+		' :#  '
 		], [
-		'gggggg',
-		'gggggg',
-		'gggggg',
-		'gggggg',
-		'gggggg',
-		'gggggg'
+		'ggggg',
+		'ggggg',
+		'ggggg',
+		'ggggg',
+		'ggggg',
+		'ggggg'
 		]
 	],
 	small_cactus: [

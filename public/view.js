@@ -51,15 +51,14 @@ function redraw() {
 	land.forEach(drawLand);
 	for (const id in entities) {
 		if (entities[id] !== undefined && withinViewport(entities[id].x, entities[id].y)) {
+			var selected = currentMouseOnEntity(entities[id]) && entities[id].name == 'grass';
 			if (entities[id].name == 'player' && entities[id].skin) {
 				drawEntity(entities[id].skin, entities[id].x, entities[id].y, ctx);
 			} else {
-				drawEntity(art[entities[id].name], entities[id].x, entities[id].y, ctx);
+				drawEntity(art[entities[id].name], entities[id].x, entities[id].y, ctx, selected);
 			}
 		}
 	}
-	drawCharacterUI();
-
 }
 
 function drawLand(block) {
@@ -67,15 +66,19 @@ function drawLand(block) {
 	ctx.fillRect(block.x1 - viewX, block.y1 - viewY, block.width, block.height);
 }
 
-function drawEntity(entity, x, y, context) {
-	drawStaticEntity(entity, x - viewX, y - viewY, context);
+function drawEntity(entity, x, y, context, selected) {
+	drawStaticEntity(entity, x - viewX, y - viewY, context, selected);
 }
 
-function drawStaticEntity(entity, x, y, context) {
+function drawStaticEntity(entity, x, y, context, selected) {
 	for (var i = 0; i < entity[0].length; i++) {
 		for (var j = 0; j < entity[0][i].length; j++) {
 			var character = entity[0][i][j];
-			context.fillStyle = color_key[entity[1][i][j]];
+			if (selected) {
+				context.fillStyle = 'yellow';
+			} else {
+				context.fillStyle = color_key[entity[1][i][j]];
+			}
 			context.fillText(character, x + context.measureText(character).width*j, y + font_size*i + font_size);
 		}
 	}
@@ -97,6 +100,9 @@ function centerGui() {
 	$('#main-area').children().attr("height", window.innerHeight);
 	ctx.font = font_size + "px Consolas";
 	fctx.font = font_size + "px Consolas";
+	//console.log('Player: ' + getArtWidth(art.player) + ', ' + getArtHeight(art.player));
+	//console.log('Grass: ' + getArtWidth(art.grass) + ', ' + getArtHeight(art.grass));
+	//console.log('Big pond: ' + getArtWidth(art.big_puddle) + ', ' + getArtHeight(art.big_puddle));
 }
 
 function chatBoxOutput(data) {
@@ -127,3 +133,10 @@ function drawCharacterUI() {
 	}
 }
 
+function getArtWidth(name) {
+	return ctx.measureText(art[name][0][0]).width;
+}
+
+function getArtHeight(name) {
+	return font_size * art[name][0].length;
+}
